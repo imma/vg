@@ -6,7 +6,7 @@ function main {
 
   case "${DISTRIB_ID}" in
     Ubuntu)
-      ${NOSUDO} sudo install apt-get -y bindfs
+      ${NOSUDO} sudo apt-get install -y bindfs
       ;;
   esac
 
