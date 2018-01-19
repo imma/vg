@@ -4,6 +4,12 @@ function main {
   local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
   source "$shome/script/profile"
 
+  case "${DISTRIB_ID}" in
+    Ubuntu)
+      ${NOSUDO} sudo install apt-get -y bindfs
+      ;;
+  esac
+
   export GOPATH="$shome"
   go get -u github.com/GetStream/vg
 }
