@@ -3,6 +3,7 @@
 function main {
   local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
   source "$shome/script/profile"
+  source normalize
 
   case "${DISTRIB_ID}" in
     Ubuntu)
@@ -10,8 +11,18 @@ function main {
       ;;
   esac
 
-  export GOPATH="$shome"
-  go get -u github.com/GetStream/vg
+  local url_vg_Darwin="https://github.com/GetStream/vg/releases/download/v${VG_VERSION}/vg-darwin-amd64"
+  local url_vg_Linux="https://github.com/GetStream/vg/releases/download/v${VG_VERSION}/vg-linux-amd64"
+
+  local url_vg="url_vg_$(uname -s)"
+  local fnm_vg="$(basename "${!url_vg}")"
+  cache curl "$fnm_vg" "${!url_vg}"
+
+  mkdir -p "$shome/bin"
+  pushd "$shome/bin"
+  rsync -ia "${DATA}/cache/curl/$fnm_vg" "$shome/bin/vg"
+  chmod 755 "$shome/bin/vg"
+  popd
 }
 
 main "$@"
