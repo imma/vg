@@ -8,9 +8,13 @@ function main {
     return 1
   fi
 
-  if ! type -P bindfs >/dev/null; then
-    return 1
-  fi
+  case "${DISTRIB_ID}" in
+    Darwin|Ubuntu)
+      if ! type -P bindfs >/dev/null; then
+        return 1
+      fi
+      ;;
+  esac
 
   return 0
 }
